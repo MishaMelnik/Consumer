@@ -21,6 +21,10 @@ import AuthDrawerBar from '../components/AuthDrawerBar';
 import {t} from '../services/i18n';
 
 import BECRAFTLOGO from '../images/be_craft_logo.png';
+import {
+  DrawerContentScrollView,
+  DrawerItemList,
+} from '@react-navigation/drawer';
 
 const UserPages = [
   {title: t('Campaigns'), screen: 'Home', icon: 'list'},
@@ -46,11 +50,13 @@ const UserInformation = props => {
   const {bonus, name, surname} = props;
   return (
     <View style={styles.drawerHeader}>
-      <View style={styles.drawerHeaderBalanceContainer}>
+      <View style={styles.user}>
+        <Text style={styles.nameSurname}>{name}</Text>
+        <Text style={styles.nameSurname}>{surname}</Text>
+      </View>
+      <View>
         <Text style={styles.balance}>{bonus} UAH</Text>
       </View>
-      <Text style={styles.nameSurname}>{name}</Text>
-      <Text style={styles.nameSurname}>{surname}</Text>
     </View>
   );
 };
@@ -63,19 +69,23 @@ const DrawerItems = props => {
     pages = ConsumerPages;
   }
   return (
-    <View>
-      {pages.map((item, index) => {
-        return (
-          <DrawerItem
-            item={item}
-            key={index.toString()}
-            pushes={pushes}
-            comments={comments}
-            navigate={navigate}
-            is_show_craft={is_show_craft}
-          />
-        );
-      })}
+    <View style={styles.drawer}>
+      {/*<View>*/}
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+      </DrawerContentScrollView>
+      {/*{pages.map((item, index) => {*/}
+      {/*  return (*/}
+      {/*    <DrawerItem*/}
+      {/*      item={item}*/}
+      {/*      key={index.toString()}*/}
+      {/*      pushes={pushes}*/}
+      {/*      comments={comments}*/}
+      {/*      navigate={navigate}*/}
+      {/*      is_show_craft={is_show_craft}*/}
+      {/*    />*/}
+      {/*  );*/}
+      {/*})}*/}
     </View>
   );
 };
@@ -129,7 +139,6 @@ class DrawerItem extends Component {
     return (
       <TouchableHighlight underlayColor="transparent" onPress={this._goTo}>
         <View style={styles.drawerItem}>
-          {/*<Icon color="#706d6d" style={{width: 50}} name={item.icon} size={16}/>*/}
           <Icon
             color="#706d6d"
             style={styles.styleForIconsInDrawer}
@@ -263,11 +272,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#efefef',
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
-  },
-  drawerHeaderBalanceContainer: {
-    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+  },
+  user: {
+    margin: 7,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  drawer: {
+    marginTop: -50,
   },
   drawerItemsContainer: {
     flex: 1,
@@ -277,12 +295,13 @@ const styles = StyleSheet.create({
   },
   balance: {
     margin: 10,
-    fontSize: 16,
+    fontSize: 15,
+    fontWeight: 'bold',
   },
   nameSurname: {
     margin: 6,
     fontSize: 16,
-    textAlign: 'center',
+    fontWeight: 'bold',
   },
 
   drawerItem: {

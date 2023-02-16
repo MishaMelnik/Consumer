@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, TouchableOpacity} from 'react-native';
 import {isLoggedIn, logout} from '../services';
-import {t} from '../services/i18n';
 import styles from '../services/styles';
 
 class AuthDrawerBar extends Component {
@@ -45,15 +44,7 @@ class AuthDrawerBar extends Component {
         underlayColor="transparent"
         onPress={loggedIn ? this._logout : this.login}>
         <View style={styles.drawerItem}>
-          <Icon
-            color="#706d6d"
-            style={{width: 23, textAlign: 'center', marginRight: 4}}
-            name="sign-out"
-            size={16}
-          />
-          <Text style={styles.drawerItemText}>
-            {loggedIn ? t('Go out') : t('Sign in')}
-          </Text>
+          <Icon color="white" name="sign-out" size={22} />
         </View>
       </TouchableOpacity>
     );

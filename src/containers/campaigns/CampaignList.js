@@ -156,7 +156,6 @@ class CampaignList extends Component {
   componentDidMount() {
     Geolocation.getCurrentPosition(
       position => {
-        console.log(position);
         let dataRequest = {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
@@ -304,7 +303,6 @@ class CampaignList extends Component {
 
   render() {
     const {campaignList, isLoading, catalogProducts} = this.state;
-    // console.log('campaignList', campaignList);
     return (
       <View style={{height: windowHeight}}>
         <FlatList
@@ -321,21 +319,21 @@ class CampaignList extends Component {
           title={t('New goods')}
           navigation={this.props.navigation}
         />
-        <FlatList
-          style={[styles.campaignList, {height: windowHeight * 0.45}]}
-          data={catalogProducts}
-          keyExtractor={this._keyExtractor}
-          refreshing={isLoading}
-          onRefresh={this.loadData}
-          renderItem={this.dataListItems}
-          ListEmptyComponent={
-            <View style={styles.messageFromCatalogContainer}>
-              <Text style={styles.messageFromCatalogContainerText}>
-                {t('notAuthCatalog')}
-              </Text>
-            </View>
-          }
-        />
+        {/*<FlatList*/}
+        {/*  style={[styles.campaignList, {height: windowHeight * 0.45}]}*/}
+        {/*  data={catalogProducts}*/}
+        {/*  keyExtractor={this._keyExtractor}*/}
+        {/*  refreshing={isLoading}*/}
+        {/*  onRefresh={this.loadData}*/}
+        {/*  renderItem={this.dataListItems}*/}
+        {/*  ListEmptyComponent={*/}
+        {/*    <View style={styles.messageFromCatalogContainer}>*/}
+        {/*      <Text style={styles.messageFromCatalogContainerText}>*/}
+        {/*        {t('notAuthCatalog')}*/}
+        {/*      </Text>*/}
+        {/*    </View>*/}
+        {/*  }*/}
+        {/*/>*/}
       </View>
     );
   }

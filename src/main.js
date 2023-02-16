@@ -9,7 +9,6 @@ import {TouchableHighlight, Dimensions} from 'react-native';
 //   WillPresentNotificationResult,
 //   NotificationType,
 // } from 'react-native-fcm';
-
 import {
   useNavigation,
   NavigationContainer,
@@ -45,6 +44,9 @@ import {SocialMedia} from './containers/social/SocialMedia';
 
 import * as Sentry from '@sentry/react-native';
 import {getUser, isLoggedIn} from './services';
+import {t} from './services/i18n';
+import AuthDrawerBar from './components/AuthDrawerBar';
+import {NativeBaseProvider} from 'native-base';
 
 Sentry.init({
   dsn: 'https://46625e562e3b4bd2aff63c32a5416791@sentry.io/1780076',
@@ -161,23 +163,176 @@ let headerStyle = {
 // );
 const DrawerNavigation = () => {
   const DrawerInstance = createDrawerNavigator();
+
   return (
     <DrawerInstance.Navigator
       initialRouteName="Home"
       screenOptions={{
+        drawerActiveTintColor: 'red',
         headerShown: false,
       }}
       drawerContent={props => <Drawer drawerProps={props} />}>
-      <DrawerInstance.Screen name="Home" component={CampaignList} />
-      <DrawerInstance.Screen name="PurchasesList" component={PurchasesList} />
-      <DrawerInstance.Screen name="Profile" component={Profile} />
-      <DrawerInstance.Screen name="ChangePassword" component={ChangePassword} />
-      <DrawerInstance.Screen name="QRcode" component={qrCode} />
-      <DrawerInstance.Screen name="PushHistory" component={PushHistory} />
-      <DrawerInstance.Screen name="Reviews" component={Reviews} />
-      <DrawerInstance.Screen name="BeCraft" component={BeCraftList} />
-      <DrawerInstance.Screen name="Catalog" component={Catalog} />
-      <DrawerInstance.Screen name="SocialMedia" component={SocialMedia} />
+      <DrawerInstance.Screen
+        options={{
+          title: t('Campaigns'),
+          drawerIcon: ({focused}) => (
+            <Icon name="list" size={20} color={focused ? 'red' : '#969696'} />
+          ),
+        }}
+        name="Home"
+        component={CampaignList}
+      />
+      <DrawerInstance.Screen
+        options={{
+          title: t('Product Catalog'),
+          drawerIcon: ({focused}) => (
+            <Icon
+              style={{marginRight: -2}}
+              name="shopping-bag"
+              size={20}
+              color={focused ? 'red' : '#969696'}
+            />
+          ),
+        }}
+        name="Product Catalog"
+        component={Catalog}
+      />
+      <DrawerInstance.Screen
+        options={{
+          title: t('My purchases'),
+          drawerIcon: ({focused}) => (
+            <Icon
+              style={{marginLeft: -1, marginRight: 1}}
+              name="shopping-cart"
+              size={20}
+              color={focused ? 'red' : '#969696'}
+            />
+          ),
+        }}
+        name="PurchasesList"
+        component={PurchasesList}
+      />
+
+      <DrawerInstance.Screen
+        options={{
+          title: t('Profile'),
+          drawerIcon: ({focused}) => (
+            <Icon
+              style={{marginLeft: 2, marginRight: 2}}
+              name="user"
+              size={20}
+              color={focused ? 'red' : '#969696'}
+            />
+          ),
+        }}
+        name="Profile"
+        component={Profile}
+      />
+      <DrawerInstance.Screen
+        options={{
+          title: t('Change password'),
+          drawerIcon: ({focused}) => (
+            <Icon
+              style={{marginLeft: -1, marginRight: -1}}
+              name="key"
+              size={20}
+              color={focused ? 'red' : '#969696'}
+            />
+          ),
+        }}
+        name="ChangePassword"
+        component={ChangePassword}
+      />
+      <DrawerInstance.Screen
+        options={{
+          title: t('My QR-codes'),
+          drawerIcon: ({focused}) => (
+            <Icon
+              style={{marginLeft: 1, marginRight: 1}}
+              name="qrcode"
+              size={20}
+              color={focused ? 'red' : '#969696'}
+            />
+          ),
+        }}
+        name="QRcode"
+        component={qrCode}
+      />
+      <DrawerInstance.Screen
+        options={{
+          title: t('Push-notifications history'),
+          drawerIcon: ({focused}) => (
+            <Icon
+              style={{marginLeft: -2, marginRight: -1}}
+              name="bell"
+              size={20}
+              color={focused ? 'red' : '#969696'}
+            />
+          ),
+        }}
+        name="PushHistory"
+        component={PushHistory}
+      />
+      <DrawerInstance.Screen
+        options={{
+          title: t('Reviews and Suggestions'),
+          drawerIcon: ({focused}) => (
+            <Icon
+              style={{marginRight: -4}}
+              name="edit"
+              size={20}
+              color={focused ? 'red' : '#969696'}
+            />
+          ),
+        }}
+        name="Reviews"
+        component={Reviews}
+      />
+      <DrawerInstance.Screen
+        options={{
+          title: t('Perfume shop'),
+          drawerIcon: ({focused}) => (
+            <Icon
+              style={{marginRight: -4}}
+              name="flask"
+              size={20}
+              color={focused ? 'red' : '#969696'}
+            />
+          ),
+        }}
+        name="BeCraft"
+        component={BeCraftList}
+      />
+      <DrawerInstance.Screen
+        options={{
+          title: t('Loyalty Program Terms'),
+          drawerIcon: ({focused}) => (
+            <Icon
+              style={{marginRight: -4}}
+              name="percent"
+              size={20}
+              color={focused ? 'red' : '#969696'}
+            />
+          ),
+        }}
+        name="Loyalty Program Terms"
+        component={LoyaltyTerms}
+      />
+      <DrawerInstance.Screen
+        options={{
+          title: t('SocialMedia'),
+          drawerIcon: ({focused}) => (
+            <Icon
+              style={{marginRight: -6}}
+              name="comments"
+              size={20}
+              color={focused ? 'red' : '#969696'}
+            />
+          ),
+        }}
+        name="SocialMedia"
+        component={SocialMedia}
+      />
     </DrawerInstance.Navigator>
   );
 };
@@ -220,6 +375,7 @@ const RoutingComponent = ({userType}) => {
           <Icon name="bars" size={22} color="white" />
         </TouchableHighlight>
       ),
+      headerRight: () => <AuthDrawerBar />,
     };
   };
   return (
@@ -256,8 +412,21 @@ const RoutingComponent = ({userType}) => {
         name="BeCraftRecipeStage2"
         component={BeCraftRecipeStage2}
       />
-      <Stack.Screen name="CatalogItemDetail" component={CatalogItemDetail} />
-      <Stack.Screen name="CampaignDetails" component={CampaignDetails} />
+      <Stack.Screen
+        options={{
+          title: t('Goods'),
+        }}
+        name="CatalogItemDetail"
+        component={CatalogItemDetail}
+      />
+
+      <Stack.Screen
+        options={{
+          title: t('Sale'),
+        }}
+        name="CampaignDetails"
+        component={CampaignDetails}
+      />
     </Stack.Navigator>
   );
   // return <NavApp ref="navigator" screenProps={{userType}} />;
@@ -283,9 +452,11 @@ const App = () => {
   // }, [userType]);
 
   return (
-    <NavigationContainer>
-      <RoutingComponent userType={userType} />
-    </NavigationContainer>
+    <NativeBaseProvider>
+      <NavigationContainer>
+        <RoutingComponent userType={userType} />
+      </NavigationContainer>
+    </NativeBaseProvider>
   );
 };
 // class App extends Component {
